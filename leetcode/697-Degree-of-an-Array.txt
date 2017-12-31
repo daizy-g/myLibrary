@@ -25,6 +25,8 @@ nums[i] will be an integer between 0 and 49,999.
 
  */
 
+/*************** Java Solution ***************/
+
 class Solution {
     public int findShortestSubArray(int[] nums) {
         final int MAX_SIZE = 50000;
@@ -50,4 +52,42 @@ class Solution {
         }
         return shortest;
     }
+}
+
+
+/******************** C Solution *****************/
+struct count {
+    int s;
+    int e;
+    int v;
+};
+
+int findShortestSubArray(int* nums, int numsSize) {
+    int i;
+    int max = 0;
+    int len = numsSize;
+    struct count cnt[50000];
+    for (i = 0; i < 50000; i++) {
+        cnt[i].v = 0;
+        cnt[i].s = cnt[i].e = -1;
+    }
+
+    for (i = 0; i < numsSize; i++) {
+        int t = nums[i];
+        if (cnt[t].v == 0)
+            cnt[t].s = i;
+        cnt[t].e = i;
+        cnt[t].v++;
+
+        if (cnt[t].v > max)
+            max = cnt[t].v;
+    }
+
+    for (i = 0; i < 50000; i++) {
+        if (cnt[i].v == max) {
+            if (len > (cnt[i].e - cnt[i].s + 1))
+                len = cnt[i].e - cnt[i].s + 1;
+        }
+    }
+    return len;
 }
